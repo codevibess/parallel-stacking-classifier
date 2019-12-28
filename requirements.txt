@@ -1,1 +1,5 @@
 mpi4py==3.0.3
+seaborn
+scikit-learn
+pandas
+numpy
