@@ -26,6 +26,30 @@ def load_mnist_data():
     data = digits.images.reshape((n_samples, -1))
     return data, digits.target
 
+def load_cifar10_data():
+    data = list()
+    labels = list()
+    for batch_index in range(1, 6):
+        batch = unpickle("cifar-10-batches-py/data_batch_" + str(batch_index)) 
+        data = data + list(batch[b"data"])
+        labels = labels + batch[b"labels"]
+    return data, labels
+    
+def load_cifar100_data():
+    data = list()
+    labels = list()
+    for batch_name in ["test", "train"]:
+        batch = unpickle("cifar-100/" + batch_name) 
+        data = data + list(batch[b"data"])
+        labels = labels + batch[b"coarse_labels"]
+    return data, labels
+        
+def unpickle(file):
+    import pickle
+    with open(file, 'rb') as fo:
+        dict = pickle.load(fo, encoding='bytes')
+    return dict
+
 def print_results(description, accuracy, time, num_cores):
     print(description)
     print("Accuracy: " + str(accuracy), ", Time: " + str(time) + " seconds" + ", cores: " + str(num_cores))
@@ -67,6 +91,15 @@ def cross_validation_run(X, y, num_cores, description):
     end = time.time()
     print_results(description, acc, end - start, num_cores)    
         
-X, y = load_mnist_data()
-train_test_run(X, y, num_cores, "Train-test MNIST")
-cross_validation_run(X, y, num_cores, "CV MNIST")
+X_mnist, y_mnist = load_mnist_data()
+X_cifar10, y_cifar10 = load_cifar10_data()
+X_cifar100, y_cifar100 = load_cifar100_data()
+
+train_test_run(X_mnist, y_mnist, num_cores, "Train-test MNIST")
+cross_validation_run(X_mnist, y_mnist, num_cores, "CV MNIST")
+
+train_test_run(X_cifar10, y_cifar10, num_cores, "Train-test CIFAR-10")
+cross_validation_run(X_cifar10, y_cifar10, num_cores, "CV CIFAR-10")
+
+train_test_run(X_cifar10, y_cifar10, num_cores, "Train-test CIFAR-100")
+cross_validation_run(X_cifar10, y_cifar10, num_cores, "CV CIFAR-100")
