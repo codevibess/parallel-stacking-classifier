@@ -1,5 +1,6 @@
-from mpi4py import MPI
 import numpy as np
+from mpi4py import MPI
+
 
 # initialize MPI environment
 comm = MPI.COMM_WORLD
@@ -30,6 +31,34 @@ bcast_finish_time = MPI.Wtime()
 bcast_time = bcast_finish_time - bcast_start_time
 print(f'[TIME] Master process ({rank}) finished Bcasting data with time {bcast_time}') if rank == 0 else print(f'[TIME] Process {rank} finished receive bcasted data with time {bcast_time}')
 
+
+# classification 
+algorithm=None
+classification_time_start = MPI.Wtime()
+if rank == 0:
+    classification_output = "0"
+    algorithm = 'knn'
+    pass
+elif rank == 1:
+    classification_output = "1"
+    algorithm='svc'
+    pass
+elif rank == 2:
+    classification_output = "2"
+    algorithm='grigsearch'
+    pass
+elif rank == 3:
+    classification_output = "3"
+    algorithm='forest'
+    pass
+
+classification_time_end = MPI.Wtime()
+classification_time = classification_time_end - classification_time_start
+print(f'[TIME] Process {rank} finished classification by {algorithm} algorithm with time: {classification_time}')
+
+# stacking
+outputs_from_classifications = comm.gather(classification_output)
+print(outputs_from_classifications)
 
 # MPI environment finalization
 MPI.Finalize()
