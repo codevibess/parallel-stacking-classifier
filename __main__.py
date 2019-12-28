@@ -13,7 +13,7 @@ import timeit
 num_cores = 1
 num_repetitions = 10
 
-def load_mnist_train_test():
+def load_mnist_data():
     # The digits dataset
     digits = datasets.load_digits()
     
@@ -21,17 +21,16 @@ def load_mnist_train_test():
     # turn the data in a (samples, feature) matrix:
     n_samples = len(digits.images)
     data = digits.images.reshape((n_samples, -1))
-    
-    # Split data into train and test subsets
-    X_train, X_test, y_train, y_test = train_test_split(
-        data, digits.target, test_size=0.3, shuffle=False)
-    return X_train, X_test, y_train, y_test
+    return data, digits.target
 
 def print_results(description, accuracy, time, num_cores):
     print(description)
     print("Accuracy: " + str(accuracy), ", Time: " + str(time) + " seconds" + ", cores: " + str(num_cores))
 
-def train_test_run(X_train, X_test, y_train, y_test, num_cores):
+def train_test_run(X, y, num_cores, description):
+    # Split data into train and test subsets
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.3, shuffle=False)
     start = time.time()
     clf1 = svm.SVC(gamma=0.001)
     clf2 = RandomForestClassifier()
@@ -42,8 +41,8 @@ def train_test_run(X_train, X_test, y_train, y_test, num_cores):
     predicted = classifier.predict(X_test)
     acc = accuracy_score(predicted, y_test)
     end = time.time()
-    print_results("Train-test MNIST", acc, end - start, num_cores)
+    print_results(description, acc, end - start, num_cores)
 
-X_train, X_test, y_train, y_test = load_mnist_train_test()
-train_test_run(X_train, X_test, y_train, y_test, num_cores)
+X, y = load_mnist_data()
+train_test_run(X, y, num_cores, "Train-test MNIST")
 
