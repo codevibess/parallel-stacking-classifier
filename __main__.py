@@ -43,12 +43,18 @@ def load_cifar100_data():
         data = data + list(batch[b"data"])
         labels = labels + batch[b"coarse_labels"]
     return data, labels
-        
+
 def unpickle(file):
     import pickle
     with open(file, 'rb') as fo:
         dict = pickle.load(fo, encoding='bytes')
     return dict
+
+def load_letter_data()
+    data = pd.read_csv("letter-recognition/letter-recognition.data", header=None)
+    y = np.array(data.iloc[:,0])  
+    X = np.array(data.iloc[:,1:len(data)])  
+    return X, y 
 
 def print_results(description, accuracy, time, num_cores):
     print(description)
@@ -94,6 +100,7 @@ def cross_validation_run(X, y, num_cores, description):
 X_mnist, y_mnist = load_mnist_data()
 X_cifar10, y_cifar10 = load_cifar10_data()
 X_cifar100, y_cifar100 = load_cifar100_data()
+X_letter, y_letter = load_letter_data()
 
 train_test_run(X_mnist, y_mnist, num_cores, "Train-test MNIST")
 cross_validation_run(X_mnist, y_mnist, num_cores, "CV MNIST")
@@ -103,3 +110,6 @@ cross_validation_run(X_cifar10, y_cifar10, num_cores, "CV CIFAR-10")
 
 train_test_run(X_cifar10, y_cifar10, num_cores, "Train-test CIFAR-100")
 cross_validation_run(X_cifar10, y_cifar10, num_cores, "CV CIFAR-100")
+
+train_test_run(X_letter, y_letter, num_cores, "Train-test letter recognition")
+cross_validation_run(X_letter, y_letter, num_cores, "CV letter recognition")
