@@ -18,12 +18,12 @@ import StackingClassifier as st
 def bcast_data(data):
     print(f'[INFO] Bcasting data from the root process ({rank})') if rank == 0 else None
     bcast_start_time = MPI.Wtime()
-    X_train, X_test, y_train, y_test = comm.bcast(data, root=0)
+    data = comm.bcast(data, root=0)
     bcast_finish_time = MPI.Wtime()
 
     bcast_time = bcast_finish_time - bcast_start_time
     print(f'[TIME] Master process ({rank}) finished Bcasting data with time {bcast_time}') if rank == 0 else print(f'[TIME] Process {rank} finished receive bcasted data with time {bcast_time}')
-    return X_train, X_test, y_train, y_test 
+    return data
 
 def classify(X_train, X_test, y_train, y_test):
         # classification 
@@ -105,7 +105,6 @@ def load_letter_data():
 
 def train_test( X, y ):
     if rank == 0:
-        program_start_time = MPI.Wtime()
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.3, shuffle=False)
 
@@ -123,9 +122,9 @@ def train_test( X, y ):
     if rank == 0:
         voted_data = st.vote(outputs_from_classifications)
         acc = accuracy_score(voted_data, y_test)
-        print(acc)
-    program_finish_time = MPI.Wtime()
-    print(program_finish_time-program_start_time, rank)
+        print(f'[ACCURANCY] Final accurancy for test-train is {acc}')
+    
+    
 
 
 def cross_validation(X, y):
@@ -141,7 +140,7 @@ def cross_validation(X, y):
         data = None
 
 
-    data = comm.bcast(data)
+    data = bcast_data(data)
     accuracies = list()
     count = 0 
     for tuple_with_data in data: 
