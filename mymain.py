@@ -102,13 +102,6 @@ if rank == 0:
 
     data = (X_train, X_test, y_train, y_test)
 
-    # classifier = get_multi_classifier()
-    # classifier.fit(X_train, y_train)
-
-    # predicted = classifier.predict(X_test)
-
-    # print_results("Train-test MNIST", acc, end - start, num_cores)
-
 else:
     data = None
     
@@ -119,7 +112,6 @@ else:
 print(f'[INFO] Bcasting data from the root process ({rank})') if rank == 0 else None
 bcast_start_time = MPI.Wtime()
 X_train, X_test, y_train, y_test = comm.bcast(data, root=0)
-print(y_test)
 bcast_finish_time = MPI.Wtime()
 
 bcast_time = bcast_finish_time - bcast_start_time
@@ -130,29 +122,43 @@ print(f'[TIME] Master process ({rank}) finished Bcasting data with time {bcast_t
 algorithm=None
 classification_time_start = MPI.Wtime()
 if rank == 0:
-    classification_output = "0"
     algorithm = 'knn'
+    clf0 = KNeighborsClassifier()
+    st.fit(clf0, X_train, y_train)
+    classification_output = st.predict(clf0, X_test)
+    # classification_output = "0"
     pass
 elif rank == 1:
-    classification_output = "1"
     algorithm='svc'
+    clf1 = svm.SVC(gamma=0.001)
+    st.fit(clf1, X_train, y_train)
+    classification_output = st.predict(clf1, X_test)
     pass
 elif rank == 2:
-    classification_output = "2"
-    algorithm='grigsearch'
+    algorithm='gaussian'
+    clf2 = GaussianNB()
+    st.fit(clf2, X_train, y_train)
+    classification_output = st.predict(clf2, X_test)
     pass
 elif rank == 3:
-    classification_output = "3"
-    algorithm='forest'
+    algorithm='randomforest'
+    clf3 = RandomForestClassifier()
+    st.fit(clf3, X_train, y_train)
+    classification_output = st.predict(clf3, X_test)
+
     pass
 
 classification_time_end = MPI.Wtime()
 classification_time = classification_time_end - classification_time_start
 print(f'[TIME] Process {rank} finished classification by {algorithm} algorithm with time: {classification_time}')
 
-# stacking
+
 outputs_from_classifications = comm.gather(classification_output)
-print(outputs_from_classifications)
+# stacking
+if rank == 0:
+    voted_data = st.vote(outputs_from_classifications)
+    acc = accuracy_score(voted_data, y_test)
+    print(acc)
 
 # MPI environment finalization
 MPI.Finalize()
