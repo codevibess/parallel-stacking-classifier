@@ -159,6 +159,7 @@ if rank == 0:
     voted_data = st.vote(outputs_from_classifications)
     acc = accuracy_score(voted_data, y_test)
     print(acc)
-
+    finish_time = MPI.Wtime()
+    print(finish_time-bcast_start_time)
 # MPI environment finalization
 MPI.Finalize()
