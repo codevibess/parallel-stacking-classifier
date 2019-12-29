@@ -10,7 +10,6 @@ def predict(clf, X_test):
 
 
 def vote(preds):
-    print('__________', preds)
     np_preds = np.array(preds).T
     result_list = list()
     for row in np_preds:

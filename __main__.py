@@ -73,7 +73,10 @@ def cross_validation_run(X, y, num_cores, description):
     kf = KFold(n_splits=10, shuffle = True)
     kf.get_n_splits(X)
     accuracies = list()
+    count=0
     for train_index, test_index in kf.split(X):
+        count = count + 1
+        print(count)
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = y[train_index], y[test_index]
         classifier = get_multi_classifier()
@@ -104,8 +107,8 @@ X_mnist, y_mnist = load_mnist_data()
 # X_cifar100, y_cifar100 = load_cifar100_data()
 # X_letter, y_letter = load_letter_data()
 
-train_test_run(X_mnist, y_mnist, num_cores, "Train-test MNIST")
-# cross_validation_run(X_mnist, y_mnist, num_cores, "CV MNIST")
+# train_test_run(X_mnist, y_mnist, num_cores, "Train-test MNIST")
+cross_validation_run(X_mnist, y_mnist, num_cores, "CV MNIST")
 
 # train_test_run(X_cifar10, y_cifar10, num_cores, "Train-test CIFAR-10")
 # cross_validation_run(X_cifar10, y_cifar10, num_cores, "CV CIFAR-10")
