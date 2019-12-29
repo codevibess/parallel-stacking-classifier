@@ -1,7 +1,7 @@
 import numpy as np
 from mpi4py import MPI
 
-
+print("AAAAA")
 # initialize MPI environment
 comm = MPI.COMM_WORLD
 size = comm.Get_size()

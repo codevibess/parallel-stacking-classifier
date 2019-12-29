@@ -10,11 +10,12 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
 from MultiClassifier import MultiClassifier
 from sklearn.model_selection import KFold
-
+from mpi4py import MPI
 import timeit
+import StackingClassifier as st
 
 num_cores = 1
-num_repetitions = 10
+
 
 def load_mnist_data():
     # The digits dataset
@@ -68,23 +69,6 @@ def get_multi_classifier():
     classifier = MultiClassifier([clf1, clf2, clf3, clf4])
     return classifier
 
-def cross_validation_run(X, y, num_cores, description):
-    start = time.time()
-    kf = KFold(n_splits=10, shuffle = True)
-    kf.get_n_splits(X)
-    accuracies = list()
-    for train_index, test_index in kf.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = y[train_index], y[test_index]
-        classifier = get_multi_classifier()
-        classifier.fit(X_train, y_train)
-        predicted = classifier.predict(X_test)
-        acc = accuracy_score(predicted, y_test)
-        accuracies.append(acc)
-    acc = np.mean(accuracies)
-    end = time.time()
-    print_results(description, acc, end - start, num_cores)   
-
 def train_test_run(X, y, num_cores, description):
     # Split data into train and test subsets
     X_train, X_test, y_train, y_test = train_test_split(
@@ -99,19 +83,76 @@ def train_test_run(X, y, num_cores, description):
 
  
         
-X_mnist, y_mnist = load_mnist_data()
-# X_cifar10, y_cifar10 = load_cifar10_data()
-# X_cifar100, y_cifar100 = load_cifar100_data()
-# X_letter, y_letter = load_letter_data()
+# initialize MPI environment
+comm = MPI.COMM_WORLD
+size = comm.Get_size()
+rank = comm.Get_rank()
 
-train_test_run(X_mnist, y_mnist, num_cores, "Train-test MNIST")
-# cross_validation_run(X_mnist, y_mnist, num_cores, "CV MNIST")
+if rank==0:
+    print(f"[INFO] Program runned in {size} processes")
 
-# train_test_run(X_cifar10, y_cifar10, num_cores, "Train-test CIFAR-10")
-# cross_validation_run(X_cifar10, y_cifar10, num_cores, "CV CIFAR-10")
+print(f"[INFO] Hello from process number {rank}")
 
-# train_test_run(X_cifar10, y_cifar10, num_cores, "Train-test CIFAR-100")
-# cross_validation_run(X_cifar10, y_cifar10, num_cores, "CV CIFAR-100")
 
-# train_test_run(X_letter, y_letter, num_cores, "Train-test letter recognition")
-# cross_validation_run(X_letter, y_letter, num_cores, "CV letter recognition")
+if rank == 0:
+    X, y = load_mnist_data()
+    
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.3, shuffle=False)
+
+    data = (X_train, X_test, y_train, y_test)
+
+    # classifier = get_multi_classifier()
+    # classifier.fit(X_train, y_train)
+
+    # predicted = classifier.predict(X_test)
+
+    # print_results("Train-test MNIST", acc, end - start, num_cores)
+
+else:
+    data = None
+    
+    
+
+
+
+print(f'[INFO] Bcasting data from the root process ({rank})') if rank == 0 else None
+bcast_start_time = MPI.Wtime()
+X_train, X_test, y_train, y_test = comm.bcast(data, root=0)
+print(y_test)
+bcast_finish_time = MPI.Wtime()
+
+bcast_time = bcast_finish_time - bcast_start_time
+print(f'[TIME] Master process ({rank}) finished Bcasting data with time {bcast_time}') if rank == 0 else print(f'[TIME] Process {rank} finished receive bcasted data with time {bcast_time}')
+
+
+# classification 
+algorithm=None
+classification_time_start = MPI.Wtime()
+if rank == 0:
+    classification_output = "0"
+    algorithm = 'knn'
+    pass
+elif rank == 1:
+    classification_output = "1"
+    algorithm='svc'
+    pass
+elif rank == 2:
+    classification_output = "2"
+    algorithm='grigsearch'
+    pass
+elif rank == 3:
+    classification_output = "3"
+    algorithm='forest'
+    pass
+
+classification_time_end = MPI.Wtime()
+classification_time = classification_time_end - classification_time_start
+print(f'[TIME] Process {rank} finished classification by {algorithm} algorithm with time: {classification_time}')
+
+# stacking
+outputs_from_classifications = comm.gather(classification_output)
+print(outputs_from_classifications)
+
+# MPI environment finalization
+MPI.Finalize()

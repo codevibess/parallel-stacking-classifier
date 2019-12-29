@@ -34,6 +34,6 @@ pip install -r requirements.txt
 ```
 mpiexec python -m mpi4py __main__.py
 ```
->> if you dont specify number of processes manually, program will automatically create process using formula: 1 physical core = 1 process
+> if you dont specify number of processes manually, program will automatically create process using formula: 1 physical core = 1 process
 
 >> program runned with module mpi4py to avoid deadlocks ( the finalizer hook of mpi4py module will call MPI_Abort() on the MPI_COMM_WORLD communicator, thus effectively aborting the MPI execution environment.)
