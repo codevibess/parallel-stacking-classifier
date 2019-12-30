@@ -14,6 +14,7 @@ from mpi4py import MPI
 import timeit
 import StackingClassifier as st
 import argparse
+import sys
 
 def bcast_data(data):
     print(f'[INFO] Bcasting data from the root process ({rank})') if rank == 0 else None
@@ -174,20 +175,27 @@ rank = comm.Get_rank()
 
 
 if rank==0:
-    parser = argparse.ArgumentParser(description='Foo')
-    requiredNamed = parser.add_argument_group('required named arguments')
-    requiredNamed.add_argument('-t', '--type', help='cv or train_test', required=True)
-    requiredNamed.add_argument('-d', '--datasetName', help='MNIST', required=True)
-    parser.parse_args()
     print(f"[INFO] Program runned in {size} processes")
 
 print(f"[INFO] Hello from process number {rank}")
-X, y = load_mnist_data()
-# X, y = load_letter_data()
-program_start_time = MPI.Wtime()
-# classification_output = train_test(X, y)
 
-classification_output = cross_validation(X, y)
+if sys.argv[1] == 'MNIST':
+    X, y = load_mnist_data()
+elif sys.argv[1] == 'CIFAR-10':
+    X, y = load_cifar10_data()
+elif sys.argv[1] == 'CIFAR-100':
+    X, y = load_cifar100_data()
+elif sys.argv[1] == 'letter-recognition':
+    X, y = load_letter_data()
+
+program_start_time = MPI.Wtime()
+
+if sys.argv[2] =='CV':
+    classification_output = cross_validation(X, y)
+elif sys.argv[2] == 'test-train':
+    classification_output = train_test(X, y)
+
+
 program_end_time = MPI.Wtime()
 program_time = program_end_time - program_start_time
 

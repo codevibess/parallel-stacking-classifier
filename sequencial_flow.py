@@ -102,13 +102,13 @@ def train_test_run(X, y, num_cores, description):
 
  
         
-# X_mnist, y_mnist = load_mnist_data()
+X_mnist, y_mnist = load_mnist_data()
 # X_cifar10, y_cifar10 = load_cifar10_data()
 # X_cifar100, y_cifar100 = load_cifar100_data()
-X_letter, y_letter = load_letter_data()
+# X_letter, y_letter = load_letter_data()
 
-# train_test_run(X_mnist, y_mnist, num_cores, "Train-test MNIST")
-# cross_validation_run(X_mnist, y_mnist, num_cores, "CV MNIST")
+train_test_run(X_mnist, y_mnist, num_cores, "Train-test MNIST")
+cross_validation_run(X_mnist, y_mnist, num_cores, "CV MNIST")
 
 # train_test_run(X_cifar10, y_cifar10, num_cores, "Train-test CIFAR-10")
 # cross_validation_run(X_cifar10, y_cifar10, num_cores, "CV CIFAR-10")
@@ -116,5 +116,5 @@ X_letter, y_letter = load_letter_data()
 # train_test_run(X_cifar10, y_cifar10, num_cores, "Train-test CIFAR-100")
 # cross_validation_run(X_cifar10, y_cifar10, num_cores, "CV CIFAR-100")
 
-train_test_run(X_letter, y_letter, num_cores, "Train-test letter recognition")
-cross_validation_run(X_letter, y_letter, num_cores, "CV letter recognition")
+# train_test_run(X_letter, y_letter, num_cores, "Train-test letter recognition")
+# cross_validation_run(X_letter, y_letter, num_cores, "CV letter recognition")
