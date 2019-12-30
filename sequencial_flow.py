@@ -68,6 +68,26 @@ def get_multi_classifier():
     classifier = MultiClassifier([clf1, clf2, clf3, clf4])
     return classifier
 
+def cross_validation_run(X, y, num_cores, description):
+    start = time.time()
+    kf = KFold(n_splits=10, shuffle = True)
+    kf.get_n_splits(X)
+    accuracies = list()
+    count=0
+    for train_index, test_index in kf.split(X):
+        count = count + 1
+        print(count)
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+        classifier = get_multi_classifier()
+        classifier.fit(X_train, y_train)
+        predicted = classifier.predict(X_test)
+        acc = accuracy_score(predicted, y_test)
+        accuracies.append(acc)
+    acc = np.mean(accuracies)
+    end = time.time()
+    print_results(description, acc, end - start, num_cores)   
+
 def train_test_run(X, y, num_cores, description):
     # Split data into train and test subsets
     X_train, X_test, y_train, y_test = train_test_split(
@@ -80,22 +100,7 @@ def train_test_run(X, y, num_cores, description):
     end = time.time()
     print_results(description, acc, end - start, num_cores)
 
-def cross_validation_run(X, y, num_cores, description):
-    start = time.time()
-    kf = KFold(n_splits=10, shuffle = True)
-    kf.get_n_splits(X)
-    accuracies = list()
-    for train_index, test_index in kf.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = y[train_index], y[test_index]
-        classifier = get_multi_classifier()
-        classifier.fit(X_train, y_train)
-        predicted = classifier.predict(X_test)
-        acc = accuracy_score(predicted, y_test)
-        accuracies.append(acc)
-    acc = np.mean(accuracies)
-    end = time.time()
-    print_results(description, acc, end - start, num_cores)    
+ 
         
 X_mnist, y_mnist = load_mnist_data()
 # X_cifar10, y_cifar10 = load_cifar10_data()
