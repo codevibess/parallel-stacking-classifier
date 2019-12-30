@@ -32,7 +32,7 @@ pip install -r requirements.txt
 3) Run using mpiexec:
 
 ```
-mpiexec python -m mpi4py __main__.py
+mpiexec python -m mpi4py parallel_main.py -t type -d datasetName
 ```
 > if you dont specify number of processes manually, program will automatically create process using formula: 1 physical core = 1 process
 
