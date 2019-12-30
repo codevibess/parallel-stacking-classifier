@@ -2,10 +2,10 @@
 
 Implementation of parallel computing stacking classifier using Message Passing Interface.
 Stacking classifier is based on 4 classifiers:
-- add
-- add
-- add
-- add
+- GaussianNB
+- RandomForestClassifier
+- SVC
+- KNeighborsClassifier
 
 Parallel computing workflow:
 
@@ -29,11 +29,29 @@ Master process sends the data to the slave processes, every process classifies u
 pip install -r requirements.txt
 ```
 
-3) Run using mpiexec:
+3) Run:
 
+> Note that you need to specify parameters like -t (type of run), -m (method), -d (dataset name)
+
+Example invocation:
 ```
 python main.py -t parallel -m test-train -d MNIST
 ```
-> if you dont specify number of processes manually, program will automatically create process using formula: 1 physical core = 1 process
+
+Available types:
+- sequence (runned by python)
+- parallel (runned by mpiexec)
+
+Available methods:
+- CV
+- test-train
+
+Available datasets:
+- MNIST
+- CIFAR-10
+- CIFAR-100
+- letter-recognition
+
+> program will automatically create process using formula: 1 physical core = 1 process
 
 >> program runned with module mpi4py to avoid deadlocks ( the finalizer hook of mpi4py module will call MPI_Abort() on the MPI_COMM_WORLD communicator, thus effectively aborting the MPI execution environment.)
