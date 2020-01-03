@@ -8,7 +8,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
-from MultiClassifier import MultiClassifier
 from sklearn.model_selection import KFold
 from mpi4py import MPI
 import timeit
@@ -31,37 +30,34 @@ def classify(X_train, X_test, y_train, y_test):
     algorithm=None
     classification_time_start = MPI.Wtime()
     if rank == 0:
-        algorithm = 'knn'
-        clf0 = KNeighborsClassifier()
+        algorithm = 'ridge'
+        clf0 = RidgeClassifier()
         st.fit(clf0, X_train, y_train)
         classification_output = st.predict(clf0, X_test)
         pass
     elif rank == 1:
-        algorithm='svc'
-        clf1 = svm.SVC(gamma=0.001)
+        algorithm='randomForest'
+        clf1 = RandomForestClassifier(n_estimators = 10)
         st.fit(clf1, X_train, y_train)
         classification_output = st.predict(clf1, X_test)
         pass
     elif rank == 2:
-        algorithm='gaussian'
-        clf2 = GaussianNB()
+        algorithm='lda'
+        clf2 = LinearDiscriminantAnalysis()
         st.fit(clf2, X_train, y_train)
         classification_output = st.predict(clf2, X_test)
         pass
     elif rank == 3:
-        algorithm='randomforest'
-        clf3 = RandomForestClassifier()
+        algorithm='naiveBayes'
+        clf3 = GaussianNB()
         st.fit(clf3, X_train, y_train)
         classification_output = st.predict(clf3, X_test)
-
         pass
 
     classification_time_end = MPI.Wtime()
     classification_time = classification_time_end - classification_time_start
     print(f'[TIME] Process {rank} finished classification by {algorithm} algorithm with time: {classification_time}')
     return classification_output
-
-
 
 def load_mnist_data():
     # The digits dataset
@@ -77,19 +73,19 @@ def load_cifar10_data():
     data = list()
     labels = list()
     for batch_index in range(1, 6):
-        batch = unpickle("cifar-10-batches-py/data_batch_" + str(batch_index)) 
+        batch = unpickle("cifar-10-batches-py/data_batch_" + str(batch_index))
         data = data + list(batch[b"data"])
         labels = labels + batch[b"labels"]
-    return data, labels
-    
+    return np.array(data), np.array(labels)
+
 def load_cifar100_data():
     data = list()
     labels = list()
     for batch_name in ["test", "train"]:
-        batch = unpickle("cifar-100/" + batch_name) 
+        batch = unpickle("cifar-100/" + batch_name)
         data = data + list(batch[b"data"])
         labels = labels + batch[b"coarse_labels"]
-    return data, labels
+    return np.array(data), np.array(labels)
 
 def unpickle(file):
     import pickle
@@ -99,10 +95,9 @@ def unpickle(file):
 
 def load_letter_data():
     data = pd.read_csv("letter-recognition/letter-recognition.data", header=None)
-    y = np.array(data.iloc[:,0])  
-    X = np.array(data.iloc[:,1:len(data)])  
-    return X, y 
-
+    y = np.array([ord(x) - 65 for x in data.iloc[:,0]])                                                  
+    X = np.array(data.iloc[:,1:len(data)])
+    return X, y
 
 def train_test( X, y ):
     if rank == 0:
@@ -124,9 +119,6 @@ def train_test( X, y ):
         voted_data = st.vote(outputs_from_classifications)
         acc = accuracy_score(voted_data, y_test)
         print(f'[ACCURANCY] Final accurancy for test-train is {acc}')
-    
-    
-
 
 def cross_validation(X, y):
     if rank == 0:
@@ -162,17 +154,10 @@ def cross_validation(X, y):
         acc_final = np.mean(accuracies)
         print(f'[ACCURANCY] Final accurancy with CV chunks is {acc_final}')
     
-
-
-
-
-
-
 # initialize MPI environment
 comm = MPI.COMM_WORLD
 size = comm.Get_size()
 rank = comm.Get_rank()
-
 
 if rank==0:
     print(f"[INFO] Program runned in {size} processes")
@@ -195,10 +180,8 @@ if sys.argv[2] =='CV':
 elif sys.argv[2] == 'test-train':
     classification_output = train_test(X, y)
 
-
 program_end_time = MPI.Wtime()
 program_time = program_end_time - program_start_time
-
 
 if rank == 0:
     print(f'[INFO] Stacking classifier finish work with time: {program_time}')
