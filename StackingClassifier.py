@@ -1,10 +1,13 @@
 import numpy as np
 
+
 def fit(clf, X_train, y_train):
     return clf.fit(X_train, y_train)
 
+
 def predict(clf, X_test):
     return clf.predict(X_test)
+
 
 def vote(preds):
     np_preds = np.array(preds).T

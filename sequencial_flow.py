@@ -22,11 +22,13 @@ num_repetitions = 10
 
 def print_results(description, accuracy, time, num_cores):
     print(description)
-    print("Accuracy: " + str(accuracy), ", Time: " + str(time) + " seconds" + ", cores: " + str(num_cores))
+    print("Accuracy: " + str(accuracy), ", Time: " +
+          str(time) + " seconds" + ", cores: " + str(num_cores))
+
 
 def get_multi_classifier():
     clf1 = RidgeClassifier()
-    clf2 = RandomForestClassifier(n_estimators = 10)
+    clf2 = RandomForestClassifier(n_estimators=10)
     clf3 = LinearDiscriminantAnalysis()
     clf4 = GaussianNB()
     classifier = MultiClassifier([
@@ -34,13 +36,15 @@ def get_multi_classifier():
         clf2,
         clf3,
         clf4
-        ])
+    ])
     return classifier
+
 
 def train_test_run(X, y, num_cores, description):
     print("Train-test run of " + description)
     # Split data into train and test subsets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle=False)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.3, shuffle=False)
     start = time.time()
     classifier = get_multi_classifier()
     classifier.fit(X_train, y_train)
@@ -49,10 +53,11 @@ def train_test_run(X, y, num_cores, description):
     end = time.time()
     print_results(description, acc, end - start, num_cores)
 
+
 def cross_validation_run(X, y, num_cores, description):
     print("CV run of " + description)
     start = time.time()
-    kf = KFold(n_splits=10, shuffle = True)
+    kf = KFold(n_splits=10, shuffle=True)
     kf.get_n_splits(X)
     accuracies = list()
     for train_index, test_index in kf.split(X):
@@ -66,6 +71,7 @@ def cross_validation_run(X, y, num_cores, description):
     acc = np.mean(accuracies)
     end = time.time()
     print_results(description, acc, end - start, num_cores)
+
 
 X_mnist, y_mnist = loader.load_mnist_data()
 X_cifar10, y_cifar10 = loader.load_cifar10_data()
