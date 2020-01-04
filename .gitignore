@@ -1,4 +1,8 @@
 .vscode
+.DS_Store
+cifar-100/
+cifar-10-batches-py/
+letter-recognition/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

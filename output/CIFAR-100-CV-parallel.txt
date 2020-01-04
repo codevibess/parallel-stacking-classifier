@@ -1,0 +1,93 @@
+parallel
+[INFO] Hello from process number 1
+[INFO] Hello from process number 2
+[INFO] Hello from process number 3
+[INFO] Program runned in 4 processes
+[INFO] Hello from process number 0
+[INFO] Bcasting data from the root process (0)
+[TIME] Master process (0) finished Bcasting data with time 18.797626
+[INFO] Running cross_validation with 1 chunk of data by 0 process
+[TIME] Process 3 finished receive bcasted data with time 21.640926999999998
+[INFO] Running cross_validation with 1 chunk of data by 3 process
+[TIME] Process 1 finished receive bcasted data with time 21.73496
+[INFO] Running cross_validation with 1 chunk of data by 1 process
+[TIME] Process 2 finished receive bcasted data with time 21.738128
+[INFO] Running cross_validation with 1 chunk of data by 2 process
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 9.517373
+[TIME] Process 0 finished classification by ridge algorithm with time: 14.511683000000001
+[TIME] Process 1 finished classification by randomForest algorithm with time: 34.424594
+[TIME] Process 2 finished classification by lda algorithm with time: 84.81560400000001
+[INFO] Running cross_validation with 2 chunk of data by 0 process
+[INFO] Running cross_validation with 2 chunk of data by 2 process
+[INFO] Running cross_validation with 2 chunk of data by 1 process
+[INFO] Running cross_validation with 2 chunk of data by 3 process
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 8.602619000000004
+[TIME] Process 0 finished classification by ridge algorithm with time: 11.895987999999988
+[TIME] Process 1 finished classification by randomForest algorithm with time: 34.310693
+[TIME] Process 2 finished classification by lda algorithm with time: 82.092268
+[INFO] Running cross_validation with 3 chunk of data by 0 process
+[INFO] Running cross_validation with 3 chunk of data by 1 process
+[INFO] Running cross_validation with 3 chunk of data by 2 process
+[INFO] Running cross_validation with 3 chunk of data by 3 process
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 8.650531
+[TIME] Process 0 finished classification by ridge algorithm with time: 12.313466000000005
+[TIME] Process 1 finished classification by randomForest algorithm with time: 34.45703499999999
+[TIME] Process 2 finished classification by lda algorithm with time: 81.96717699999999
+[INFO] Running cross_validation with 4 chunk of data by 2 process
+[INFO] Running cross_validation with 4 chunk of data by 3 process
+[INFO] Running cross_validation with 4 chunk of data by 0 process
+[INFO] Running cross_validation with 4 chunk of data by 1 process
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 8.625319999999988
+[TIME] Process 0 finished classification by ridge algorithm with time: 12.279567999999983
+[TIME] Process 1 finished classification by randomForest algorithm with time: 34.771015000000034
+[TIME] Process 2 finished classification by lda algorithm with time: 82.68017299999997
+[INFO] Running cross_validation with 5 chunk of data by 1 process
+[INFO] Running cross_validation with 5 chunk of data by 2 process
+[INFO] Running cross_validation with 5 chunk of data by 3 process
+[INFO] Running cross_validation with 5 chunk of data by 0 process
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 8.88326699999999
+[TIME] Process 0 finished classification by ridge algorithm with time: 12.10195600000003
+[TIME] Process 1 finished classification by randomForest algorithm with time: 34.04242700000003
+[TIME] Process 2 finished classification by lda algorithm with time: 81.89327500000002
+[INFO] Running cross_validation with 6 chunk of data by 3 process
+[INFO] Running cross_validation with 6 chunk of data by 0 process
+[INFO] Running cross_validation with 6 chunk of data by 1 process
+[INFO] Running cross_validation with 6 chunk of data by 2 process
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 8.69282400000003
+[TIME] Process 0 finished classification by ridge algorithm with time: 11.945719999999994
+[TIME] Process 1 finished classification by randomForest algorithm with time: 35.17083599999995
+[TIME] Process 2 finished classification by lda algorithm with time: 84.70967400000006
+[INFO] Running cross_validation with 7 chunk of data by 0 process
+[INFO] Running cross_validation with 7 chunk of data by 1 process
+[INFO] Running cross_validation with 7 chunk of data by 2 process
+[INFO] Running cross_validation with 7 chunk of data by 3 process
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 9.357727999999952
+[TIME] Process 0 finished classification by ridge algorithm with time: 12.377132999999958
+[TIME] Process 1 finished classification by randomForest algorithm with time: 32.772257999999965
+[TIME] Process 2 finished classification by lda algorithm with time: 85.18967799999996
+[INFO] Running cross_validation with 8 chunk of data by 1 process
+[INFO] Running cross_validation with 8 chunk of data by 2 process
+[INFO] Running cross_validation with 8 chunk of data by 0 process
+[INFO] Running cross_validation with 8 chunk of data by 3 process
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 9.331277
+[TIME] Process 0 finished classification by ridge algorithm with time: 12.879054999999994
+[TIME] Process 1 finished classification by randomForest algorithm with time: 35.031844999999976
+[TIME] Process 2 finished classification by lda algorithm with time: 83.22869500000002
+[INFO] Running cross_validation with 9 chunk of data by 1 process
+[INFO] Running cross_validation with 9 chunk of data by 2 process
+[INFO] Running cross_validation with 9 chunk of data by 0 process
+[INFO] Running cross_validation with 9 chunk of data by 3 process
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 9.813528999999903
+[TIME] Process 0 finished classification by ridge algorithm with time: 11.531271999999944
+[TIME] Process 1 finished classification by randomForest algorithm with time: 34.184657000000016
+[TIME] Process 2 finished classification by lda algorithm with time: 89.63896599999998
+[INFO] Running cross_validation with 10 chunk of data by 2 process
+[INFO] Running cross_validation with 10 chunk of data by 1 process
+[INFO] Running cross_validation with 10 chunk of data by 0 process
+[INFO] Running cross_validation with 10 chunk of data by 3 process
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 8.781237000000033
+[TIME] Process 0 finished classification by ridge algorithm with time: 11.753875999999991
+[TIME] Process 1 finished classification by randomForest algorithm with time: 33.894566000000054
+[TIME] Process 2 finished classification by lda algorithm with time: 82.284764
+[ACCURANCY] Final accurancy with CV chunks is 0.24145
+[INFO] Stacking classifier finish work with time: 860.992952

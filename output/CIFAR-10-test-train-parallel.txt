@@ -1,0 +1,17 @@
+parallel
+[INFO] Program runned in 4 processes
+[INFO] Hello from process number 0
+[INFO] Hello from process number 2
+[INFO] Hello from process number 1
+[INFO] Hello from process number 3
+[INFO] Bcasting data from the root process (0)
+[TIME] Master process (0) finished Bcasting data with time 0.29896
+[TIME] Process 3 finished receive bcasted data with time 0.430532
+[TIME] Process 2 finished receive bcasted data with time 0.425713
+[TIME] Process 1 finished receive bcasted data with time 0.425648
+[TIME] Process 0 finished classification by ridge algorithm with time: 7.2966560000000005
+[TIME] Process 3 finished classification by naiveBayes algorithm with time: 8.400877
+[TIME] Process 1 finished classification by randomForest algorithm with time: 17.258086
+[TIME] Process 2 finished classification by lda algorithm with time: 57.400176
+[ACCURANCY] Final accurancy for test-train is 0.36333333333333334
+[INFO] Stacking classifier finish work with time: 57.916004
