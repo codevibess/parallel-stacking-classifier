@@ -1,24 +1,23 @@
+import argparse
 import sys
 import time
 import timeit
-import argparse
+
 import numpy as np
 import pandas as pd
 import seaborn as sn
 from mpi4py import MPI
+from sklearn import datasets, metrics, svm
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model.ridge import RidgeClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import KFold, train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+
 import dataset_loader as loader
 import StackingClassifier as st
-
-from sklearn import datasets, svm, metrics
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import KFold
-from sklearn.linear_model.ridge import RidgeClassifier
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.naive_bayes import GaussianNB
 
 
 def bcast_data(data):
@@ -35,7 +34,7 @@ def bcast_data(data):
 
 
 def classify(X_train, X_test, y_train, y_test):
-        # classification
+    # classification
     algorithm = None
     classification_time_start = MPI.Wtime()
     if rank == 0:

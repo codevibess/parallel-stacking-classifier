@@ -1,21 +1,21 @@
 import sys
+import time
+import timeit
+
+import numpy as np
 import pandas as pd
 import seaborn as sn
-import time
-import numpy as np
-from sklearn import datasets, svm, metrics
-from sklearn.model_selection import train_test_split
-from sklearn.neural_network import MLPClassifier
-from sklearn.ensemble import RandomForestClassifier
+from sklearn import datasets, metrics, svm
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model.ridge import RidgeClassifier
-from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
-from MultiClassifier import MultiClassifier
-from sklearn.model_selection import KFold
+from sklearn.model_selection import KFold, train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neural_network import MLPClassifier
 
-import timeit
 import dataset_loader as loader
+from MultiClassifier import MultiClassifier
 
 num_cores = 1
 num_repetitions = 10
@@ -85,7 +85,6 @@ elif sys.argv[1] == 'letter-recognition':
 
 
 if sys.argv[2] == 'CV':
-    classification_output = cross_validation_run(X, y, num_cores, f'{sys.argv[1]} {sys.argv[2]}')
+    cross_validation_run(X, y, num_cores, f'{sys.argv[1]} {sys.argv[2]}')
 elif sys.argv[2] == 'test-train':
-    classification_output = train_test_run(X, y, num_cores, f'{sys.argv[1]} {sys.argv[2]}')
-
+    train_test_run(X, y, num_cores, f'{sys.argv[1]} {sys.argv[2]}')

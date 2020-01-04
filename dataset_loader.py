@@ -1,22 +1,13 @@
-import pandas as pd
-import seaborn as sn
-import time
-import numpy as np
-from sklearn import datasets, svm, metrics
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import KFold
-from sklearn.linear_model.ridge import RidgeClassifier
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.naive_bayes import GaussianNB
-from mpi4py import MPI
-import timeit
-import StackingClassifier as st
 import argparse
 import sys
+import time
+import timeit
+
+import numpy as np
+import pandas as pd
+import seaborn as sn
+from mpi4py import MPI
+from sklearn import datasets, metrics, svm
 
 
 def load_mnist_data():
