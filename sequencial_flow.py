@@ -1,3 +1,4 @@
+import sys
 import pandas as pd
 import seaborn as sn
 import time
@@ -73,19 +74,18 @@ def cross_validation_run(X, y, num_cores, description):
     print_results(description, acc, end - start, num_cores)
 
 
-X_mnist, y_mnist = loader.load_mnist_data()
-X_cifar10, y_cifar10 = loader.load_cifar10_data()
-X_cifar100, y_cifar100 = loader.load_cifar100_data()
-X_letter, y_letter = loader.load_letter_data()
-print("data loaded")
-train_test_run(X_mnist, y_mnist, num_cores, "Train-test MNIST")
-cross_validation_run(X_mnist, y_mnist, num_cores, "CV MNIST")
+if sys.argv[1] == 'MNIST':
+    X, y = loader.load_mnist_data()
+elif sys.argv[1] == 'CIFAR-10':
+    X, y = loader.load_cifar10_data()
+elif sys.argv[1] == 'CIFAR-100':
+    X, y = loader.load_cifar100_data()
+elif sys.argv[1] == 'letter-recognition':
+    X, y = loader.load_letter_data()
 
-train_test_run(X_cifar10, y_cifar10, num_cores, "Train-test CIFAR-10")
-cross_validation_run(X_cifar10, y_cifar10, num_cores, "CV CIFAR-10")
 
-train_test_run(X_cifar100, y_cifar100, num_cores, "Train-test CIFAR-100")
-cross_validation_run(X_cifar100, y_cifar100, num_cores, "CV CIFAR-100")
+if sys.argv[2] == 'CV':
+    classification_output = cross_validation_run(X, y, num_cores, f'{sys.argv[1]} {sys.argv[2]}')
+elif sys.argv[2] == 'test-train':
+    classification_output = train_test_run(X, y, num_cores, f'{sys.argv[1]} {sys.argv[2]}')
 
-train_test_run(X_letter, y_letter, num_cores, "Train-test letter recognition")
-cross_validation_run(X_letter, y_letter, num_cores, "CV letter recognition")

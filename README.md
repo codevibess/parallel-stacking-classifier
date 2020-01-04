@@ -35,7 +35,7 @@ pip install -r requirements.txt
 
 Example invocation:
 ```
-python main.py -t parallel -m test-train -d MNIST -n 4 
+python main.py -t parallel -m test-train -d MNIST
 ```
 
 Available types:

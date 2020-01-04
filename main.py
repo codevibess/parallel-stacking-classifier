@@ -16,7 +16,7 @@ args = parser.parse_args(sys.argv[1:])
 print(args.type)
 
 if args.type == 'sequence':
-    process = subprocess.Popen("python sequencial_flow.py", shell=True)
+    process = subprocess.Popen(f"python sequencial_flow.py {args.dataset} {args.method}", shell=True)
 elif args.type == 'parallel':
     process = subprocess.Popen(f"mpiexec python -m mpi4py parallel_flow.py {args.dataset} {args.method}" , shell=True)
 
