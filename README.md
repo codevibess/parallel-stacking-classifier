@@ -2,10 +2,10 @@
 
 Implementation of parallel computing stacking classifier using Message Passing Interface.
 Stacking classifier is based on 4 classifiers:
-- GaussianNB
+- RidgeClassifier
 - RandomForestClassifier
-- SVC
-- KNeighborsClassifier
+- LinearDiscriminantAnalysis
+- GaussianNB
 
 Parallel computing workflow:
 
@@ -35,7 +35,7 @@ pip install -r requirements.txt
 
 Example invocation:
 ```
-python main.py -t parallel -m test-train -d MNIST
+python -m parallel-stacking-classifier -t parallel -m test-train -d MNIST
 ```
 
 Available types:

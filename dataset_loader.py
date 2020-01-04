@@ -5,8 +5,7 @@ import timeit
 
 import numpy as np
 import pandas as pd
-import seaborn as sn
-from mpi4py import MPI
+
 from sklearn import datasets, metrics, svm
 
 

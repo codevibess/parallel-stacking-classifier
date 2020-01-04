@@ -56,7 +56,7 @@ def classify(X_train, X_test, y_train, y_test):
         classification_output = st.predict(clf2, X_test)
         pass
     elif rank == 3:
-        algorithm = 'naiveBayes'
+        algorithm = 'GaussianNaiveBayes'
         clf3 = GaussianNB()
         st.fit(clf3, X_train, y_train)
         classification_output = st.predict(clf3, X_test)
