@@ -53,5 +53,13 @@ Available datasets:
 - letter-recognition
 
 > program will automatically create process using formula: 1 physical core = 1 process
+> if you want manually specify number of processes add flag -n (--numberOfProcesses) 
+
+Example:
+```
+python -m parallel-stacking-classifier -t parallel -m test-train -d MNIST -n 2
+```
+
+> Note that number of processes can be choosen only for parallel program invocation, the same invocation for sequencial flow will not work 
 
 >> program runned with module mpi4py to avoid deadlocks ( the finalizer hook of mpi4py module will call MPI_Abort() on the MPI_COMM_WORLD communicator, thus effectively aborting the MPI execution environment.)
