@@ -21,6 +21,9 @@ if __name__ == '__main__':
                         help='Method: CV train-test',
                         required=True,
                         choices=['CV', 'test-train'])
+    required.add_argument('-n', '--numberOfProcesses',
+                        nargs='?',
+                        help='Number of processes')
     parser.parse_args()
 
     args = parser.parse_args(sys.argv[1:])
@@ -32,5 +35,5 @@ if __name__ == '__main__':
             shell=True)
     elif args.type == 'parallel':
         process = subprocess.Popen(
-            f"mpiexec python -m mpi4py parallel_flow.py {args.dataset} {args.method}",
+            f"mpiexec -n {args.numberOfProcesses} python -m mpi4py parallel_flow.py {args.dataset} {args.method}",
             shell=True)
